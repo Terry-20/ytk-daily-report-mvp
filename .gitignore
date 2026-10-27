@@ -1,0 +1,19 @@
+# 环境变量 / 真实口令
+.env
+
+# 运行期上传与成品（按 session 隔离，勿提交）
+uploads/
+结果.xlsx
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 结果临时文件
+*.xlsx.tmp
+*~
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store

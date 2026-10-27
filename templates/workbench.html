@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>工作台 - 粤通卡日报 MVP</title>
+</head>
+<body>
+  <h1>工作台</h1>
+  {% with msgs = get_flashed_messages() %}
+    {% for m in msgs %}<p>{{ m }}</p>{% endfor %}
+  {% endwith %}
+
+  <h2>已上传</h2>
+  <ul>
+    {% for f in files %}<li>{{ f }}</li>
+    {% else %}<li>无</li>
+    {% endfor %}
+  </ul>
+
+  <form method="post" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx">
+    <button type="submit">上传文件</button>
+  </form>
+
+  <hr>
+  <form method="post" action="/generate"><button type="submit">开始生成</button></form>
+  <form method="post" action="/clear"><button type="submit">清空本次上传</button></form>
+  {% if result_exists %}
+    <a href="/download"><button type="button">下载成品</button></a>
+  {% else %}
+    <button type="button" disabled>下载成品</button>
+  {% endif %}
+
+  <p><a href="/logout">退出登录</a></p>
+</body>
+</html>
