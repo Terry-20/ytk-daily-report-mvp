@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ytk-daily-report-mvp
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: MVP_PASSWORD
+        generateValue: false
+        value: unitoll
+      - key: MVP_SECRET
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.12.8"

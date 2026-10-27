@@ -96,3 +96,25 @@ python -c "import openpyxl; print(openpyxl.load_workbook('结果.xlsx').active['
 
 原完整公式与材料角色识别、历史台账、截图 OCR、用户账号体系、制表日 / 港澳字段、
 Cloudflare Worker 内跑 openpyxl。验证通过后再替换计算引擎与材料约定。
+
+## 6. 公网验收（免绑域名）
+
+### 临时隧道（单位机已跑 `python app.py` 时）
+
+```powershell
+npx --yes localtunnel --port 5000
+# 或安装 cloudflared 后：
+# cloudflared tunnel --url http://127.0.0.1:5000
+```
+
+把打印出的 `https://…` 链接用手机/另一网络打开即可。隧道进程关掉后链接失效。
+
+### 稳定免费托管（Render）
+
+1. 打开 [Render](https://render.com)，用 GitHub 登录，New → Web Service，选本仓库。
+2. Build：`pip install -r requirements.txt`；Start：`gunicorn app:app --bind 0.0.0.0:$PORT`。
+3. 环境变量：`MVP_PASSWORD=unitoll`（可改）、`MVP_SECRET` 随机字符串。
+4. 得到 `https://xxx.onrender.com`。免费档闲置约 15 分钟会休眠，首次打开可能要等约 1 分钟。
+
+本仓库已含 `Procfile` / `render.yaml` 便于一键识别。
+

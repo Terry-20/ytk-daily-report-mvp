@@ -177,4 +177,6 @@ def download():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000)
+    # Render/云托管用 PORT；本地默认 5000。0.0.0.0 便于隧道与托管探活。
+    port = int(os.environ.get("PORT", "5000"))
+    app.run(host="0.0.0.0", port=port)
