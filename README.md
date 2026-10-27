@@ -31,7 +31,7 @@ $env:MVP_PASSWORD='你的口令'
 python app.py
 ```
 
-监听 `127.0.0.1:5000`。浏览器打开 http://127.0.0.1:5000 ，输入口令进入工作台。
+监听 `127.0.0.1:5055`。浏览器打开 http://127.0.0.1:5055 ，输入口令进入工作台。
 
 手机（iPhone Safari）：进站 → 逐文件选择 材料1.xlsx、材料2.xlsx → 开始生成 → 下载成品。
 
@@ -55,19 +55,19 @@ Web 闭环自测（可用 curl）：
 
 ```bash
 # 1) 错口令应被拒绝
-curl -s -o /dev/null -w "%{http_code}\n" -X POST -d "password=wrong" http://127.0.0.1:5000/login
+curl -s -o /dev/null -w "%{http_code}\n" -X POST -d "password=wrong" http://127.0.0.1:5055/login
 # 预期：200（仍停留在登录页，不会进入工作台）
 
 # 2) 对口令登录并保存 cookie
-curl -c cookies.txt -s -o /dev/null -X POST -d "password=unitoll" http://127.0.0.1:5000/login
+curl -c cookies.txt -s -o /dev/null -X POST -d "password=unitoll" http://127.0.0.1:5055/login
 
 # 3) 上传两个材料
-curl -b cookies.txt -F "file=@fixtures/材料1.xlsx" http://127.0.0.1:5000/upload
-curl -b cookies.txt -F "file=@fixtures/材料2.xlsx" http://127.0.0.1:5000/upload
+curl -b cookies.txt -F "file=@fixtures/材料1.xlsx" http://127.0.0.1:5055/upload
+curl -b cookies.txt -F "file=@fixtures/材料2.xlsx" http://127.0.0.1:5055/upload
 
 # 4) 生成并下载，校验货款=100
-curl -b cookies.txt -X POST http://127.0.0.1:5000/generate
-curl -b cookies.txt -o 结果.xlsx http://127.0.0.1:5000/download
+curl -b cookies.txt -X POST http://127.0.0.1:5055/generate
+curl -b cookies.txt -o 结果.xlsx http://127.0.0.1:5055/download
 python -c "import openpyxl; print(openpyxl.load_workbook('结果.xlsx').active['A2'].value)"
 # 预期：100.0
 ```
@@ -102,9 +102,9 @@ Cloudflare Worker 内跑 openpyxl。验证通过后再替换计算引擎与材�
 ### 临时隧道（单位机已跑 `python app.py` 时）
 
 ```powershell
-npx --yes localtunnel --port 5000
+npx --yes localtunnel --port 5055
 # 或安装 cloudflared 后：
-# cloudflared tunnel --url http://127.0.0.1:5000
+# cloudflared tunnel --url http://127.0.0.1:5055
 ```
 
 把打印出的 `https://…` 链接用手机/另一网络打开即可。隧道进程关掉后链接失效。
